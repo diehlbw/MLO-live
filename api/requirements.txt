@@ -9,7 +9,7 @@ h11==0.13.0
 huggingface-hub==0.5.1
 idna==3.3
 joblib==1.1.0
-numpy==1.22.3
+numpy==1.21.6
 packaging==21.3
 Pillow==9.1.0
 pydantic==1.9.0
