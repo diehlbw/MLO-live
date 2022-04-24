@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline
 
+from log_config import get_logger
+
+logger = get_logger("my-project-logger")
 app = FastAPI()
 
 class PredictionRequest(BaseModel):
@@ -9,7 +12,8 @@ class PredictionRequest(BaseModel):
 
 @app.get("/health")
 async def root():
-    return {"message": "This is live"}
+    logger.info("Health was queried")
+    return {"message": "App is running"}
 
 @app.post("/analyze")
 def analyze(request: PredictionRequest):
