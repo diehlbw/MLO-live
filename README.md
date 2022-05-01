@@ -13,15 +13,17 @@ Once the server is up (depending on the week's detailed instructions):
 
 
 ## Week 4 - containerization
+Once server is up and running, see usage above
 ### Option 1. Local deployment (ECR access)
 1. From a prompt, it can be pulled and spun up in a single command:  
-  `docker run -p 8080:8080 public.ecr.aws/d4e8a7g0/bwd/mlo-live:wk4`
+  `docker run -itp 8080:8080 public.ecr.aws/d4e8a7g0/bwd/mlo-live:wk4`
+    * This includes running with -it vs -d to view live logging
 
 ### Option 2. Local deployment with local image build
 If you don't have access to the ECR you need to build this locally:
 1. Clone this repository and navigate to the project root
 2. From a prompt run:  
-  `$ docker build -t bwd-sentiment:local`
+  `$ docker build -t bwd-sentiment:local`  
   `$ docker run -p 8080:8080 bwd-sentiment:local`
 
 
@@ -34,8 +36,8 @@ The following may already be available via 44.201.231.8, but somewhat unlikely t
 This avoids anaconda because there is too much bloat for the micro EC2 instance to have room for that AND the  (sometimes) actually required torch/transformers libraries. 
 Instructions will vary slightly depending on OS and python distribution
 
-1. `$ python3 -m venv env`
-1. `$ source env/bin/activate`
+1. `$ python3 -m venv env`  
+1. `$ source env/bin/activate`  
 1. `$ pip install -r api/requirements.txt`
 
 ### Actually spin up:
