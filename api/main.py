@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from transformers import pipeline
 
@@ -10,22 +11,28 @@ app = FastAPI()
 class PredictionRequest(BaseModel):
   query_string: str
 
-@app.get('/health')
+@app.get('/')
 async def root():
+    return RedirectResponse(url="/docs")
+
+@app.get('/health')
+async def health():
     logger.info("Health was queried")
     return {'message': "App is running"}
 
 @app.post('/analyze')
 def analyze(request: PredictionRequest):
-    sentiment_model = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+    try: # Pre-cache the model during image build
+        sentiment_model = pipeline("sentiment-analysis", model=r"/app/models/distilbert")
+    except:
+        logger.error("!!! Did not find saved model, using default")
+        sentiment_model = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
 
     response = {'query':request.query_string}
     try:
         model_out = sentiment_model(response['query'])[0]
-        #Force error
-        #raise ValueError("Could not understand comment")
     except BaseException as e: # Catch everything
-        err_str = f"Model analysis failed ({type(e).__name__}): {str(e)}"
+        err_str = f"Model analysis failed ({type(e).__name__}): {str(e)[:300]}"
         logger.error(err_str)
         raise HTTPException(status_code=500, detail=err_str)
 
