@@ -36,10 +36,12 @@ The following may already be available via 44.201.231.8, but somewhat unlikely t
 This avoids anaconda because there is too much bloat for the micro EC2 instance to have room for that AND the  (sometimes) actually required torch/transformers libraries. 
 Instructions will vary slightly depending on OS and python distribution
 
+From the root of the cloned repository run the following:
 1. `$ python3 -m venv env`  
 1. `$ source env/bin/activate`  
-1. `$ pip install -r api/requirements.txt`
+1. `$ pip install -r src/requirements.txt`
 
 ### Actually spin up:
+From inside the src directory
 1. `$ uvicorn main:app --host 0.0.0.0 --port 8080`
 </details>
